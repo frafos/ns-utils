@@ -34,7 +34,7 @@ just define `CONTAINER_RUNTIME` accordingly:
 export CONTAINER_RUNTIME=systemd-nspawn
 ```
 
-### `netns_exec`
+### netns_exec
 
 This function allows to execute a command in the container's **network namespace**, while
 keeping all other namespaces untouched.
@@ -59,7 +59,7 @@ frafos@testhost:~$ netns_exec ldap ip a
 ```
 
 
-### `allns_exec`
+### allns_exec
 
 This function allows to execute a command in the container's namespaces.
 
@@ -94,7 +94,7 @@ If `systemd-nspawn` as a runtime, the environment will be left empty, whereby it
 with the environment of the container's `PID 1` for all other runtimes.
 
 
-### `local_exec`
+### local_exec
 
 This function allows for executing a program present on the host (for example: `vim`)
 while joining the mount namespace of the container.
