@@ -92,3 +92,29 @@ _=/usr/bin/env
 **Please note** that `allns_exec` will reset the environment variables in the command started.
 If `systemd-nspawn` as a runtime, the environment will be left empty, whereby it will be populated
 with the environment of the container's `PID 1` for all other runtimes.
+
+
+### `local_exec`
+
+This function allows for executing a program present on the host (for example: `vim`)
+while joining the mount namespace of the container.
+
+This is particularily usefull to edit a file in the container filesystem using
+an editor only present on the host.
+
+Here the `ldap` container does not have `vim` installed:
+``` shell
+frafos@testhost:~$ allns_exec ldap vim /etc/passwd
+env: 'vim': No such file or directory
+```
+
+However, this works:
+``` shell
+local_exec ldap vim /etc/passwd
+```
+
+**Please note** that this function has many restrictions. For example, it will not be
+able to load any configuration otherwise used on the host. In fact, once the binary has
+been loaded, `nsenter` will shift the process into the target namespace, which makes
+the configuration files on the host inaccessible. That is however that precise feature
+that allows for editing a file within the container's mount namespace.

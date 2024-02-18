@@ -60,3 +60,9 @@ allns_exec() {
   fi
   sudo nsenter -a -t ${lead_pid} env -i - ${env_vars} $@
 }
+
+local_exec() {
+  lead_pid=$(container_pid $1) ; shift
+  exec_bin=$(readlink -f $(type -P $1)) ; shift
+  sudo nsenter -m -t ${lead_pid} --wd=$(dirname ${exec_bin}) ./$(basename ${exec_bin}) $@
+}
