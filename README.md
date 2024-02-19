@@ -8,7 +8,7 @@ in container namespaces.
 Just download [ns-utils.sh](ns-utils.sh) to your home directory and `source` it.
 
 ``` shell
-git clone https://gitlab.frafos.net/Coeffic/ns-utils
+git clone https://github.com/frafos/ns-utils.git
 source ns-utils/ns-utils.sh
 ```
 
