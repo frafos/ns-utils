@@ -2,8 +2,12 @@
 # Very simple container helpers
 #
 
-detect_container_runtime() {
-  if [[ -f /usr/bin/podman ]] ; then
+detect_container_runtime() (
+  has_cmd() {
+    command -v $1 2>&1 > /dev/null
+  }
+
+  if has_cmd podman ; then
     # check if current user is root
     if [[ "${UID}" -eq 0 ]] ; then
       # if user is root, we will just use regular podman
@@ -12,15 +16,17 @@ detect_container_runtime() {
       # otherwise we'll use sudo upfront
       echo "sudo-podman"
     fi
-  elif [[ -f /usr/bin/systemd-nspawn ]] ; then
+  elif has_cmd systemd-nspawn && has_cmd machinectl ; then
     echo "systemd-nspawn"
-  elif [[ -f /usr/bin/docker ]] ; then
+  elif has_cmd docker ; then
     echo "docker"
+  elif has_cmd nerdctl ; then
+    echo "nerdctl"
   else
     echo "could not detect container runtime"
     exit -1
   fi
-}
+)
 
 # Runtime defaults to auto detection
 CONTAINER_RUNTIME="${CONTAINER_RUNTIME:-$(detect_container_runtime)}"
@@ -38,7 +44,7 @@ container_pid() {
     systemd-nspawn)
       machinectl show -p Leader --value $1
       ;;
-    *podman|docker)
+    *podman|docker|nerdctl)
       pocker_get_pid $1
       ;;
     *)
