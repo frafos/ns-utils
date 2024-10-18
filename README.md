@@ -23,8 +23,10 @@ sudo-podman
 ```
 
 The supported runtimes are:
+- `docker`: well, you've heard of it, right?
 - `sudo-podman`: podman containers run as `root` user.
 - `podman`: podman container run as current user.
+- `nerdctl`: Docker-compatible CLI for [containerd](https://containerd.io/).
 - `systemd-nspawn`: well, the name says it all.
 
 In case the runtime is not detected correctly (you have more than one installed),
